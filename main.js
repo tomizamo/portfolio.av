@@ -1,22 +1,7 @@
-/* =========================================================
-   BASE DE DATOS
-   Un solo array con TODOS los proyectos. Cada objeto tiene
-   siempre la misma forma:
 
-     video   -> ruta del .mp4, o null si todavía no tiene.
-                Es el campo que marca al proyecto como "selected":
-                si tiene video va al bento, si no, solo al archivo.
-     poster  -> el frame que se ve mientras el video carga.
-     tamano  -> cómo ocupa el bento: "feature" (2x2), "wide" (2x1)
-                o "" (1x1). Solo importa si tiene video.
-
-   OJO con el orden: define a la vez el orden del archivo Y cómo
-   se acomodan los tiles en el bento (ver nota en renderBento).
-   ========================================================= */
 
 const proyectos = [
 
-    /* ---------- Con video (van al bento y al archivo) ---------- */
 
     {
         anio: "2026",
@@ -110,7 +95,7 @@ const proyectos = [
 
     },
     {
-        // el único que no es 16:9 (1540x720), por eso va en un tile ancho
+
         anio: "2022",
         titulo: "Peroni Capri",
         tipo: "Global Commercial",
@@ -131,7 +116,7 @@ const proyectos = [
         tamano: ""
     },
 
-    /* ---------- Solo créditos (van solo al archivo) ---------- */
+
     { anio: "2026", titulo: "La Morenita", tipo: "Advertisement", rol: "Ayudante de Producción", productora: "Parda Filma", video: null, poster: null, tamano: "" },
     { anio: "2026", titulo: "Opill", tipo: "Advertisement", rol: "Ayudante de Producción", productora: "Argentina Cine", video: null, poster: null, tamano: "" },
     { anio: "2026", titulo: "Cologuard (Brutally Honest / Novela)", tipo: "Advertisement", rol: "Asistente de Producción", productora: "Argentina Cine", video: null, poster: null, tamano: "" },
@@ -192,48 +177,13 @@ const proyectos = [
 ];
 
 
-/* =========================================================
-   ORDEN POR AÑO
-   Los dos renders leen de acá, no del array de arriba.
-
-   [...proyectos] hace una COPIA. sort() reordena el array que toca,
-   y no queremos desordenar el que escribiste a mano.
-
-   Number(b.anio) - Number(a.anio) da un número: negativo, cero o
-   positivo. Eso es lo único que sort() mira para decidir quién va
-   antes. Con la b primero, ordena de mayor a menor (2026 arriba).
-
-   Y como sort() es estable, los que empatan en el año quedan en el
-   mismo orden en que los escribiste: de principio a fin de año.
-   ========================================================= */
 
 const proyectosOrdenados = [...proyectos].sort((a, b) => Number(b.anio) - Number(a.anio));
 
 
-/* =========================================================
-   RENDER 1 · EL BENTO (selected works)
-   Solo los proyectos que tienen video.
-
-   Cómo se acomodan: la grilla es de 4 columnas y CSS va ubicando
-   cada tile en el primer hueco libre, en el orden del array.
-   Con los tamaños de arriba el resultado es:
-
-     fila 1-2 | nescafe | WOS (2x2)      | axebiza      |
-              | julieta |                | encargado    |
-     fila 3   | yeti (2x1)               | snap | mcdon |
-     fila 4   | quilmes | peroni (2x1)          | night |
-
-   Si cambiás un tamaño o el orden, los span tienen que seguir
-   cerrando de a 4 por fila o el bento queda con huecos.
-   ========================================================= */
-
-/* bentoSlots guarda la GEOMETRÍA (el tamano de cada posición del grid):
-   eso es lo que hace que los spans sigan cerrando de a 4 por fila, y no
-   se toca nunca. bentoAsignacion guarda qué proyecto vive hoy en cada
-   posición: eso es lo único que se intercambia al hacer click. */
 let bentoSlots = [];
 let bentoAsignacion = [];
-let bentoIndiceReproductora = -1;   // el slot "feature" original de WOS: no se mueve
+let bentoIndiceReproductora = -1;  
 
 function intercambiarProyectosBento(a, b) {
     const tmp = bentoAsignacion[a];
@@ -241,8 +191,7 @@ function intercambiarProyectosBento(a, b) {
     bentoAsignacion[b] = tmp;
 }
 
-// muted es obligatorio: ningún navegador deja arrancar solo un video con sonido.
-// playsinline evita que iOS lo abra en pantalla completa.
+
 function pintarTileBento(indice) {
     const p = bentoAsignacion[indice];
     const tile = document.querySelector(`#bento .tile[data-indice="${indice}"]`);
@@ -271,74 +220,58 @@ function pintarTileBento(indice) {
 function renderBento() {
     const contenedor = document.getElementById('bento');
 
-    // filter() devuelve un array nuevo con los que cumplen la condición.
+
     const conVideo = proyectosOrdenados.filter(p => p.video !== null);
 
-    // la geometría queda fija en el orden original del array (así el bento
-    // nunca deja huecos); la asignación es la copia que se va a mezclar.
     bentoSlots = conVideo.map(p => p.tamano);
     bentoAsignacion = [...conVideo];
     bentoIndiceReproductora = bentoSlots.findIndex(t => t === 'feature');
 
-    // Arranque al azar: cada carga de página intercambia la reproductora
-    // con un slot cualquiera, para que no sea siempre el mismo proyecto el
-    // que abre arriba. Es el mismo mecanismo que un click, solo que el
-    // "click" lo dispara la carga de la página en vez del visitante.
+
     const indiceAzar = Math.floor(Math.random() * bentoAsignacion.length);
     intercambiarProyectosBento(bentoIndiceReproductora, indiceAzar);
 
     bentoSlots.forEach((tamano, indice) => {
         const tile = document.createElement('div');
-        // tamano puede ser "", y ahí la clase queda solo "tile" (1x1)
+
         tile.className = 'tile ' + tamano;
         tile.dataset.indice = indice;
         contenedor.appendChild(tile);
         pintarTileBento(indice);
     });
 
-    // Delegado en el contenedor y no por tile: los tiles nunca se destruyen
-    // (solo se les repinta el innerHTML), así que un solo listener alcanza
-    // para toda la vida de la página.
+
     contenedor.addEventListener('click', (evento) => {
         const tile = evento.target.closest('.tile');
         if (!tile) return;
 
         const indice = Number(tile.dataset.indice);
-        // clickear la reproductora misma no tiene nada para intercambiar
+
         if (indice === bentoIndiceReproductora) return;
 
         intercambiarProyectosBento(bentoIndiceReproductora, indice);
         pintarTileBento(bentoIndiceReproductora);
         pintarTileBento(indice);
 
-        // los tiles recién pintados traen data-tipo/data-rol/data-i18n sin
-        // traducir: reaplico el idioma activo, igual que hace activarVerMas().
         traducir(idiomaActual);
     });
 }
 
 
-/* =========================================================
-   RENDER 2 · EL ARCHIVO (acordeón)
-   Todos los proyectos, con o sin video.
-   ========================================================= */
 
 function renderArchivo() {
     const contenedor = document.getElementById('archivo_lista');
 
-    // El año más nuevo que exista en la base. Lo saco del primer elemento
-    // porque el array ya viene ordenado de mayor a menor, así no hay que
-    // venir a cambiar un "2026" escrito a mano cada enero.
     const anioTope = proyectosOrdenados[0].anio;
 
     proyectosOrdenados.forEach((p, i) => {
         const fila = document.createElement('div');
-        // los años más viejos arrancan con la clase 'oculta', que el CSS esconde
+
         fila.className = p.anio === anioTope ? 'row' : 'row oculta';
 
-        // padStart(2,'0') convierte 1 en "01", 2 en "02", etc.
+
         const numero = String(i + 1).padStart(2, '0');
-        // el año "—" no aporta nada al lado del título, así que no lo mostramos ahí
+
         const anioVisible = p.anio !== "—" ? p.anio : "";
 
         fila.innerHTML = `
@@ -360,16 +293,15 @@ function renderArchivo() {
             </div>
         `;
 
-        // Mismo addEventListener de siempre, solo que el elemento lo acaba
-        // de crear JS en vez de estar escrito en el HTML.
+
         fila.querySelector('.row_head').addEventListener('click', () => {
-            // ¿esta fila ya estaba abierta? lo pregunto ANTES de cerrar todas
+
             const estabaAbierta = fila.classList.contains('open');
 
-            // cierro todas: así solo puede haber una abierta a la vez
+
             document.querySelectorAll('.row.open').forEach(otra => otra.classList.remove('open'));
 
-            // y la abro solo si estaba cerrada (si estaba abierta, el click la cierra)
+
             if (!estabaAbierta) {
                 fila.classList.add('open');
             }
@@ -380,42 +312,29 @@ function renderArchivo() {
 }
 
 
-/* =========================================================
-   VER MÁS · despliega el archivo entero
 
-   Las filas viejas ya están creadas en el DOM, solo con la clase
-   'oculta' puesta. El botón no crea ni borra nada: prende y apaga
-   una clase en el contenedor, y el CSS decide qué se ve.
-   ========================================================= */
 
 function activarVerMas() {
     const contenedor = document.getElementById('archivo_lista');
     const boton = document.getElementById('ver_mas');
     const cuantasFaltan = contenedor.querySelectorAll('.row.oculta').length;
 
-    // si no hay nada escondido el botón no tiene sentido
+
     if (cuantasFaltan === 0) {
         boton.style.display = 'none';
         return;
     }
 
-    // El texto lleva un número adentro, así que no puede salir tal cual del
-    // diccionario. Guardo el conteo en el elemento y traducir() lo mete en
-    // el lugar del {n} que trae la frase.
+
     boton.dataset.cuantas = cuantasFaltan;
 
     boton.addEventListener('click', () => {
-        // toggle() agrega la clase si no está y la saca si está.
-        // Devuelve true cuando quedó puesta.
+
         const desplegado = contenedor.classList.toggle('expandido');
 
-        // no escribo el texto a mano: cambio qué frase le toca y retraduzco,
-        // así el botón habla el idioma que esté activo en ese momento
         boton.dataset.i18n = desplegado ? 'ver_menos' : 'ver_mas';
         traducir(idiomaActual);
 
-        // con las 55 filas desplegadas el scroll no termina más: los atajos
-        // solo tienen sentido mientras esa lista larga está a la vista.
         document.getElementById('scroll_atajos').classList.toggle('visible', desplegado);
     });
 
@@ -429,29 +348,18 @@ function activarVerMas() {
 }
 
 
-/* =========================================================
-   SOBRE · ÚLTIMA ACTUALIZACIÓN
 
-   Esta es LA línea a tocar cuando actualices el sitio. Es la única
-   fecha escrita a mano en todo el proyecto.
-   ========================================================= */
 
 const ULTIMA_ACTUALIZACION = '2026-07-23';   // AAAA-MM-DD
 
-/* La escribo con toLocaleDateString en vez de guardar la frase en los dos
-   diccionarios: así "Thursday, 23 July 2026" y "jueves, 23 de julio de 2026"
-   salen de la misma constante y no se pueden desincronizar.
 
-   El 'T00:00:00' no es decorativo: sin él, new Date() interpreta la fecha
-   como UTC, y en Buenos Aires (UTC-3) eso cae a las 21:00 del día ANTERIOR.
-   Mostraría un día menos. */
 function completarFecha() {
     const salida = document.getElementById('dato_actualizado');
     if (!salida) return;
 
     const fecha = new Date(ULTIMA_ACTUALIZACION + 'T00:00:00');
 
-    // en-GB y no en-US: da "Thursday, 23 July 2026" en vez de "Thursday, July 23, 2026"
+
     salida.textContent = fecha.toLocaleDateString(
         idiomaActual === 'es' ? 'es-AR' : 'en-GB',
         { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
@@ -459,8 +367,7 @@ function completarFecha() {
 }
 
 
-/* Reloj de Buenos Aires. timeZone lo resuelve el navegador, así que
-   marca la hora correcta aunque quien mire esté en otro país. */
+
 function arrancarReloj() {
     const salida = document.getElementById('dato_hora');
 
@@ -469,36 +376,16 @@ function arrancarReloj() {
             timeZone: 'America/Argentina/Buenos_Aires',
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false        // sin esto sale "09:31 p. m."
+            hour12: false        
         });
     }
 
     actualizar();
-    setInterval(actualizar, 30000);   // cada 30s alcanza para minutos
+    setInterval(actualizar, 30000);   
 }
 
 
-/* =========================================================
-   IDIOMA
 
-   Cómo funciona, en una frase: cada texto traducible lleva un
-   atributo en el HTML que dice QUÉ frase es, y traducir() recorre
-   el documento reemplazando cada uno por la versión del idioma
-   elegido. No se vuelve a renderizar nada.
-
-   Eso importa: si en vez de esto volviéramos a llamar a
-   renderArchivo(), al cambiar de idioma se cerraría la fila que
-   tuvieras abierta y se volvería a dibujar el retrato.
-
-   Hay tres atributos, porque hay tres clases de texto:
-
-     data-i18n  -> texto de la interfaz. La clave la elegimos nosotros.
-     data-tipo  -> el campo "tipo" de un proyecto (Commercial, Music Video…)
-     data-rol   -> el campo "rol" de un proyecto (2nd Prod. Assist…)
-
-   Los dos últimos van con la clave = el valor exacto que está escrito
-   en el array de arriba, así se ve de dónde sale cada uno.
-   ========================================================= */
 
 const TEXTOS = {
     en: {
@@ -597,9 +484,6 @@ const TEXTOS = {
     }
 };
 
-
-/* Los tipos de proyecto. La clave es el texto exacto que está escrito
-   en el campo "tipo" del array de arriba. */
 const TIPOS = {
     'Advertisement':       { en: 'Advertisement',        es: 'Publicidad' },
     'Global Commercial':   { en: 'Global Commercial',    es: 'Publicidad Global' },
@@ -609,28 +493,6 @@ const TIPOS = {
     'Documentary':         { en: 'Documentary',          es: 'Documental' }
 };
 
-/* Los roles.
-
-   Acá pasan DOS cosas a la vez, y conviene tenerlas separadas:
-
-   1) En el array de arriba el mismo puesto está escrito de varias
-      formas distintas, en los dos idiomas. "Ayudante de Producción" y
-      "2nd Prod. Assist" NO son dos puestos: son el mismo, nombrado en
-      castellano y en inglés. Lo mismo "Asistente de Producción" y
-      "1st Prod. Assist".
-
-   2) Por eso varias claves apuntan al MISMO par de traducciones. Eso
-      es a propósito: la clave es lo que vos escribiste en el proyecto,
-      el par es lo que se muestra. Así podés seguir cargando proyectos
-      con la palabra que te salga, y el sitio igual habla un solo idioma.
-
-   La escalera tiene tres escalones, y a cada uno le llegan varias
-   formas de escribirlo:
-
-      Runner  ->  Ayudante (PA)  ->  Asistente (Key PA)
-
-   En inglés los puestos se nombran como se los nombra en el rubro
-   ("PA", "Key PA"), no con la traducción literal del castellano.     */
 const ROLES = {
 
     'Aprendiz de Producción':        { en: 'Production Runner',  es: 'Runner de Producción' },
@@ -639,20 +501,18 @@ const ROLES = {
     'Ayudante de Producción':        { en: 'PA',                 es: 'Ayudante de Producción' },
     '2nd Prod. Assist':              { en: 'PA',                 es: 'Ayudante de Producción' },
 
-    // primer asistente. El "(PA)" de KOTEX es la misma tarea, así que
-    // la aclaración no se muestra
+
     'Asistente de Producción':       { en: 'Key PA',             es: 'Asistente de Producción' },
     '1st Prod. Assist':              { en: 'Key PA',             es: 'Asistente de Producción' },
     'Production Assist':             { en: 'Key PA',             es: 'Asistente de Producción' },
     'Asistente de Producción (PA)':  { en: 'Key PA',             es: 'Asistente de Producción' },
 
-    // genérico, sin proyectos hoy. Queda por si algún día cargás uno
-    // con el puesto todavía sin precisar, para que no salga sin traducir
+
     'Producción':                    { en: 'Production',         es: 'Producción' }
 };
 
 
-let idiomaActual = 'en';   // el default es inglés
+let idiomaActual = 'en';  
 
 
 function traducir(idioma) {
@@ -665,12 +525,9 @@ function traducir(idioma) {
         let texto = diccionario[el.dataset.i18n];
         if (texto === undefined) return;
 
-        // las frases con número traen {n} y {p} como huecos a rellenar
         if (el.dataset.cuantas !== undefined) texto = texto.replace('{n}', el.dataset.cuantas);
 
-        // Uso innerHTML porque algunas frases traen un <br> o un &amp;.
-        // Es seguro acá porque estos textos los escribimos nosotros en este
-        // archivo; si vinieran de un usuario habría que usar textContent.
+
         el.innerHTML = texto;
     });
 
@@ -684,15 +541,10 @@ function traducir(idioma) {
         if (par) el.textContent = par[idioma];
     });
 
-    // la fecha se arma aparte: no es una frase del diccionario, es una
-    // constante formateada según el idioma que acaba de quedar activo
     completarFecha();
 
-    // que el atributo lang diga la verdad: de eso dependen el corrector
-    // ortográfico, los lectores de pantalla y el partido de sílabas
     document.documentElement.lang = idioma;
 
-    // el link activo del switch [en] | [es]
     document.getElementById('btn_en').className = idioma === 'en' ? 'nav_link_active' : 'nav_link';
     document.getElementById('btn_es').className = idioma === 'es' ? 'nav_link_active' : 'nav_link';
 
@@ -701,7 +553,6 @@ function traducir(idioma) {
 
 
 function arrancarIdioma() {
-    // si ya eligió antes, respeto esa elección; si no, inglés
     const guardado = localStorage.getItem('idioma');
     traducir(guardado === 'es' || guardado === 'en' ? guardado : 'en');
 
@@ -709,13 +560,6 @@ function arrancarIdioma() {
     document.getElementById('btn_es').addEventListener('click', () => traducir('es'));
 }
 
-
-/* ---------- tema claro / oscuro ---------- */
-
-// Pinta la página entera de un tema. Todo el trabajo de color lo hace el CSS:
-// acá lo único que pasa es que el <html> gana o pierde data-tema="claro", y
-// styles.css tiene un bloque :root[data-tema="claro"] que le da otros valores
-// a las mismas variables. Sin atributo = tema oscuro, que es el de :root a secas.
 function aplicarTema(tema) {
     const esClaro = tema === 'claro';
 
@@ -724,11 +568,6 @@ function aplicarTema(tema) {
     } else {
         document.documentElement.removeAttribute('data-tema');
     }
-
-    // El botón ofrece siempre el tema CONTRARIO al que se está viendo.
-    // No le escribo el texto a mano: le cambio la clave de traducción y
-    // dejo que traducir() la escriba en el idioma que esté activo. Si acá
-    // pusiera textContent, el texto quedaría clavado al apretar [en]/[es].
     const boton = document.getElementById('theme_btn');
     boton.dataset.i18n = esClaro ? 'theme_btn_a_oscuro' : 'theme_btn_a_claro';
     traducir(idiomaActual);
@@ -738,40 +577,24 @@ function aplicarTema(tema) {
 
 
 function arrancarTema() {
-    // si ya eligió antes, respeto esa elección; si no, oscuro (como estaba)
     aplicarTema(localStorage.getItem('tema') === 'claro' ? 'claro' : 'oscuro');
 
     document.getElementById('theme_btn').addEventListener('click', () => {
-        // leo el estado del DOM en vez de guardar una variable aparte:
-        // así no hay dos verdades que puedan quedar desincronizadas
+
         const estabaClaro = document.documentElement.getAttribute('data-tema') === 'claro';
         aplicarTema(estabaClaro ? 'oscuro' : 'claro');
     });
 }
 
-
-/* =========================================================
-   PASARELA · animación de entrada
-   El HTML arranca con la clase 'cargando' puesta a mano: las dos barras
-   (arriba/abajo, ver 04 · PASARELA en styles.css) barren desde los bordes
-   hacia adentro. Cuando terminan, esta función cambia a 'cargado', que en
-   CSS dispara tres cosas a la vez: el texto aparece, los puntos destellan
-   y el carrusel infinito arranca.
-   ========================================================= */
 function arrancarPasarela() {
     const pasarela = document.querySelector('.pasarela');
     if (!pasarela) return;
-
-    // quien pidió menos movimiento no necesita ver la barrida: salta
-    // directo al estado final (CSS ya se encarga de no fundir ni destellar)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         pasarela.classList.remove('cargando');
         pasarela.classList.add('cargado');
         return;
     }
 
-    // las dos barras duran lo mismo (ver @keyframes barrer): con que
-    // termine una alcanza para saber que la otra también terminó
     const barra = pasarela.querySelector('.pasarela_carga');
     barra.addEventListener('animationend', () => {
         pasarela.classList.remove('cargando');
@@ -780,15 +603,13 @@ function arrancarPasarela() {
 }
 
 
-/* ---------- arranque ---------- */
+
 renderBento();
 renderArchivo();
-activarVerMas();   // va después de renderArchivo: necesita las filas ya creadas
+activarVerMas();  
 arrancarPasarela();
 arrancarReloj();
-// último de todos: traduce el HTML escrito a mano Y lo que acaban de crear
-// los renders. Si corriera antes, las filas del archivo todavía no existirían.
+
 arrancarIdioma();
-// después de arrancarIdioma: la etiqueta del botón la escribe traducir(),
-// que necesita que idiomaActual ya esté decidido
+
 arrancarTema();
