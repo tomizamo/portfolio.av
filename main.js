@@ -547,7 +547,6 @@ const TEXTOS = {
         dato_hora: 'Local time',
         dato_actualizado: 'Last update',
 
-        foot_hecho: 'Hand-written site, no frameworks'
     },
 
     es: {
@@ -584,7 +583,7 @@ const TEXTOS = {
         about_titulo: 'Sobre mí',
         about_p1: 'Este archivo existe porque hice el hábito de tomar notas y registrar procesos. Con el tiempo me acostumbré a tener todos mis registros centralizados en un solo lugar. Tener mi propia base de datos hizo que armar este portfolio fuera un trámite directo: el material ya estaba. Esa misma forma de trabajar, proactiva y ordenada, es la que llevo a cada set.',
         about_p2: 'Lo que ves acá no es el 100% de mi carrera. Llevar un registro absoluto de cada proyecto desde el primer día es imposible, y hay roles que directamente no piden ese nivel de archivo.',
-        about_pitch: 'Mi trabajo es bajar las ideas a la tierra y hacer que pasen. Si necesitás estructurar, presupuestar o ejecutar tu próximo proyecto, hablemos.',
+        about_pitch: 'Mi trabajo es bajar las ideas a la tierra y hacer que sucedan. Si necesitás estructurar, presupuestar o ejecutar tu próximo proyecto, hablemos.',
 
         contacto_titulo: 'Contacto',
         contacto_label: 'Contacto',
@@ -595,8 +594,6 @@ const TEXTOS = {
         dato_base_v: 'Buenos Aires, Argentina',
         dato_hora: 'Hora local',
         dato_actualizado: 'Última actualización',
-
-        foot_hecho: 'Sitio escrito a mano, sin frameworks'
     }
 };
 
