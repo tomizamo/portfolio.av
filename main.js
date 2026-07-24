@@ -541,7 +541,7 @@ const TEXTOS = {
         contacto_label: 'Contact',
         accion_label: 'Download CV',
         webdev_pregunta: 'Looking for a website like this?',
-        webdev_link: 'Web dev portfolio',
+        webdev_link: 'UX UI portfolio',
         dato_base: 'Base',
         dato_base_v: 'Buenos Aires, Argentina',
         dato_hora: 'Local time',
