@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title data-i18n="titulo_pagina">Tomas Zamorano — Audiovisual Producer</title>
+
+    <link rel="preload" href="resources/fonts/ppNeueGstaad/PPNeueGstaad-Regular.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="resources/fonts/ppNeueGstaad/PPNeueGstaad-Light.otf" as="font" type="font/otf" crossorigin>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        if (localStorage.getItem('tema') === 'claro') {
+            document.documentElement.setAttribute('data-tema', 'claro');
+        }
+    </script>
+</head>
+
+<body>
+
+<section class="viewport_1920_container">
+
+    <header class="main_header">
+
+        <div class="name_lockup">
+            <a href="index.html" class="name_nav" data-i18n="name_nav">tomas zamorano</a>
+            <p class="open_to_work">
+                <span class="status-indicator"></span>
+                <span class="open_to_line" data-i18n="open_to_line">open to freelance and full time work</span>
+            </p>
+        </div>
+
+        <nav class="header_nav">
+            <a href="index.html" class="nav_link_active" data-i18n="nav_link_home">Home</a>
+            <a href="#selected_works" class="nav_link" data-i18n="nav_link_work">Work</a>
+            <a href="#about" class="nav_link" data-i18n="nav_link_about">About</a>
+        </nav>
+
+        <section class="commands_nav">
+            <div id="theme_btn" class="theme_btn" data-i18n="theme_btn_a_claro">not enough light?</div>
+            <div class="language_box">
+                <div id="btn_en" class="nav_link_active" style="cursor: pointer;">[en]</div>
+                <span>|</span>
+                <div id="btn_es" class="nav_link" style="cursor: pointer;">[es]</div>
+            </div>
+        </section>
+    </header>
+
+
+    <header class="hero">
+        <h1 class="hero_title" data-i18n="hero_title">audiovisual<br>producer</h1>
+        <p class="hero_text" data-i18n="hero_text">
+            Resource management, crew coordination and problem-solving on set.<br>
+            For 6 years I have made sure shoots happen on time and on spec,
+            with every department having what it needs.<br>This portfolio is the direct record of the projects I helped bring in.
+        </p>
+    </header>
+
+
+    <div class="pasarela cargando">
+        <div class="pasarela_carga pasarela_carga_arriba"></div>
+        <div class="pasarela_carga pasarela_carga_abajo"></div>
+        <div class="pasarela_track">
+            <span data-i18n="pasarela_publicidad">Advertisement</span>
+            <span data-i18n="pasarela_videoclip">Music Videos</span>
+            <span data-i18n="pasarela_largo">Feature Films</span>
+            <span data-i18n="pasarela_tv">TV</span>
+            <span data-i18n="pasarela_eventos">Events</span>
+            <span data-i18n="pasarela_radio">Radio</span>
+
+            <span data-i18n="pasarela_publicidad">Advertisement</span>
+            <span data-i18n="pasarela_videoclip">Music Videos</span>
+            <span data-i18n="pasarela_largo">Feature Films</span>
+            <span data-i18n="pasarela_tv">TV</span>
+            <span data-i18n="pasarela_eventos">Events</span>
+            <span data-i18n="pasarela_radio">Radio</span>
+        </div>
+    </div>
+
+
+    <section id="selected_works">
+        <div class="sect_label">
+            <span class="sect_label_big" data-i18n="selected_label">Selected works</span>
+        </div>
+
+
+        <div class="bento" id="bento"></div>
+    </section>
+
+
+    <section id="archive_works">
+        <div class="sect_label">
+            <span class="sect_label_big" data-i18n="archive_label">Full archive</span>
+            <span data-i18n="archive_hint">Year / Project / Type / Role / Company</span>
+        </div>
+
+
+        <div class="index" id="archivo_lista"></div>
+
+
+        <button id="ver_mas" class="ver_mas" data-i18n="ver_mas">see full archive</button>
+
+
+        <div class="scroll_atajos" id="scroll_atajos">
+            <button id="scroll_arriba" class="scroll_atajo" aria-label="Back to top of the archive">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
+            <button id="scroll_abajo" class="scroll_atajo" aria-label="Jump to the about section">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </button>
+        </div>
+    </section>
+
+
+
+    <section id="about" class="about">
+
+        <h2 class="about_titulo" data-i18n="about_titulo">About</h2>
+
+        <div class="about_banda about_banda_notas">
+            <p class="about_parrafo" data-i18n="about_p1">
+                This archive exists because I made a habit out of taking notes and
+                tracking processes. Over time, I got used to keeping all my records
+                centralized in one place. Having my own database made putting this
+                portfolio together a straightforward process — all the material was
+                already there. That same proactive, organized approach is exactly
+                what I bring to every set.
+            </p>
+
+            <p class="about_parrafo" data-i18n="about_p2">
+                What you see here isn't 100% of my career. Keeping an absolute
+                record of every single project since day one is impossible, and
+                sometimes certain roles just don't call for that level of archiving.
+            </p>
+        </div>
+
+        <h2 class="about_titulo" data-i18n="contacto_titulo">Contact</h2>
+
+        <div class="about_banda about_banda_ficha">
+
+            <div class="contacto" id="contact">
+
+                <a class="contacto_mail" href="mailto:tomizamorano@gmail.com">tomizamorano@gmail.com</a>
+
+                <a class="contacto_accion" href="resources/media/cv-tomas-zamorano.pdf" download>
+                    <span class="contacto_accion_txt" data-i18n="accion_label">Download CV</span>
+                    <span class="contacto_meta" aria-hidden="true">PDF ↓</span>
+                </a>
+
+                <p class="contacto_pregunta" data-i18n="webdev_pregunta">Looking for a website like this?</p>
+
+                <a class="contacto_link" href="https://github.com/tomizamorano"
+                   target="_blank" rel="noopener noreferrer">
+                    <span data-i18n="webdev_link">Web dev portfolio</span>
+                    <span class="contacto_flecha" aria-hidden="true">↗</span>
+                </a>
+
+                <div class="contacto_colofon">
+                    <div>
+                        <span class="micro_label" data-i18n="dato_base">Base</span>
+                        <span class="contacto_valor" data-i18n="dato_base_v">Buenos Aires, Argentina</span>
+                    </div>
+                    <div>
+                        <span class="micro_label" data-i18n="dato_hora">Local time</span>
+                        <span class="contacto_valor"><span id="dato_hora">--:--</span> ART</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ficha_texto">
+                <p class="name_nav" data-i18n="name_nav">tomas zamorano</p>
+                <p class="open_to_work">
+                    <span class="status-indicator"></span>
+                    <span class="open_to_line" data-i18n="open_to_line">open to freelance and full time work</span>
+                </p>
+                <p class="ficha_pitch" data-i18n="about_pitch">
+                    My job is to bring ideas down to earth and make them happen. If you
+                    need to structure, budget, or execute your next project, let's talk.
+                </p>
+            </div>
+
+            <figure class="retrato">
+                <img src="resources/media/retrato.jpg" alt="Tomas Zamorano"
+                     loading="lazy" decoding="async">
+            </figure>
+        </div>
+        <footer class="foot">
+            <div class="foot_fecha">
+                <span class="micro_label" data-i18n="dato_actualizado">Last update</span>
+
+                <span id="dato_actualizado">···</span>
+            </div>
+            <div class="foot_meta">
+                <span>© 2026 — Tomas Zamorano</span>
+            </div>
+        </footer>
+    </section>
+
+</section>
+
+<script src="main.js"></script>
+</body>
+</html>
