@@ -558,7 +558,7 @@ const TEXTOS = {
         nav_link_about: 'Sobre mí',
         theme_btn_a_claro: '¿poca luz?',
         theme_btn_a_oscuro: '¿demasiada luz?',
-        open_to_line: 'disponible para freelance y full time',
+        open_to_line: 'disponible para trabajos freelance y full time',
 
         hero_title: 'productor<br>audiovisual',
         hero_text: 'Gestión de recursos, coordinación de equipos y resolución en el set.<br>Hace 6 años me dedico a que los rodajes sucedan en tiempo y forma, asegurando que cada área tenga lo que necesita.<br>Este portfolio es el registro directo de los proyectos que ayudé a concretar.',
@@ -596,13 +596,9 @@ const TEXTOS = {
         dato_hora: 'Hora local',
         dato_actualizado: 'Última actualización',
 
-        foot_hecho: 'Sitio escrito a mano, sin frameworks'
     }
 };
 
-
-/* Los tipos de proyecto. La clave es el texto exacto que está escrito
-   en el campo "tipo" del array de arriba. */
 const TIPOS = {
     'Advertisement':       { en: 'Advertisement',        es: 'Publicidad' },
     'Global Commercial':   { en: 'Global Commercial',    es: 'Publicidad Global' },
@@ -612,28 +608,6 @@ const TIPOS = {
     'Documentary':         { en: 'Documentary',          es: 'Documental' }
 };
 
-/* Los roles.
-
-   Acá pasan DOS cosas a la vez, y conviene tenerlas separadas:
-
-   1) En el array de arriba el mismo puesto está escrito de varias
-      formas distintas, en los dos idiomas. "Ayudante de Producción" y
-      "2nd Prod. Assist" NO son dos puestos: son el mismo, nombrado en
-      castellano y en inglés. Lo mismo "Asistente de Producción" y
-      "1st Prod. Assist".
-
-   2) Por eso varias claves apuntan al MISMO par de traducciones. Eso
-      es a propósito: la clave es lo que vos escribiste en el proyecto,
-      el par es lo que se muestra. Así podés seguir cargando proyectos
-      con la palabra que te salga, y el sitio igual habla un solo idioma.
-
-   La escalera tiene tres escalones, y a cada uno le llegan varias
-   formas de escribirlo:
-
-      Runner  ->  Ayudante (PA)  ->  Asistente (Key PA)
-
-   En inglés los puestos se nombran como se los nombra en el rubro
-   ("PA", "Key PA"), no con la traducción literal del castellano.     */
 const ROLES = {
 
     'Aprendiz de Producción':        { en: 'Production Runner',  es: 'Runner de Producción' },
@@ -642,20 +616,16 @@ const ROLES = {
     'Ayudante de Producción':        { en: 'PA',                 es: 'Ayudante de Producción' },
     '2nd Prod. Assist':              { en: 'PA',                 es: 'Ayudante de Producción' },
 
-    // primer asistente. El "(PA)" de KOTEX es la misma tarea, así que
-    // la aclaración no se muestra
     'Asistente de Producción':       { en: 'Key PA',             es: 'Asistente de Producción' },
     '1st Prod. Assist':              { en: 'Key PA',             es: 'Asistente de Producción' },
     'Production Assist':             { en: 'Key PA',             es: 'Asistente de Producción' },
     'Asistente de Producción (PA)':  { en: 'Key PA',             es: 'Asistente de Producción' },
 
-    // genérico, sin proyectos hoy. Queda por si algún día cargás uno
-    // con el puesto todavía sin precisar, para que no salga sin traducir
     'Producción':                    { en: 'Production',         es: 'Producción' }
 };
 
 
-let idiomaActual = 'en';   // el default es inglés
+let idiomaActual = 'en';
 
 
 function traducir(idioma) {

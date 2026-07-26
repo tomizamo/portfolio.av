@@ -66,6 +66,16 @@
     --font-ppGstaadBold: var(--font-sans);
 
     --pad: clamp(20px, 3.5vw, 80px);
+
+    /* Cursor a medida: círculo hueco color acento en reposo, y un círculo
+       relleno con una flecha (el mismo gesto que ya usan los links externos)
+       al pasar sobre algo clickeable. Van como variables para poder pisarlas
+       en el tema claro con el acento "deep" y que el cursor siga siendo legible. */
+    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%23e9b44c' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23e9b44c' fill-opacity='0.22' stroke='%23e9b44c' stroke-width='3'/%3E%3Cpath d='M13 21L21 13M21 13H14M21 13V20' stroke='%23e9b44c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") 18 18;
+    /* al hacer click no cambia a la flecha: el círculo se rellena entero del
+       mismo acento, como feedback de "presionado" */
+    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23e9b44c'/%3E%3C/svg%3E") 18 18;
 }
 
 
@@ -99,6 +109,12 @@
        muchísimo: el negro al 90% del tema oscuro acá se ve como suciedad */
     --retrato_filete: rgba(11, 11, 12, .18);
     --retrato_sombra: rgba(11, 11, 12, .32);
+
+    /* mismo cursor, con el acento "deep" del tema claro para que no se pierda
+       contra el fondo off-white */
+    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%238a6a1f' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238a6a1f' fill-opacity='0.22' stroke='%238a6a1f' stroke-width='3'/%3E%3Cpath d='M13 21L21 13M21 13H14M21 13V20' stroke='%238a6a1f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") 18 18;
+    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238a6a1f'/%3E%3C/svg%3E") 18 18;
 }
 
 * {
@@ -117,6 +133,22 @@ body {
     font-family: var(--font-sans);
     line-height: 1.45;
     -webkit-font-smoothing: antialiased;
+    cursor: var(--cursor-default), auto;
+}
+
+a, button,
+.tile, .row_head, .ver_mas, .scroll_atajo, #theme_btn,
+#btn_en, #btn_es {
+    cursor: var(--cursor-pointer), pointer;
+}
+
+/* al hacer click no se ve la flecha: el círculo se rellena entero. La
+   pseudo-clase :active pesa más que el .tile/.row_head/etc de más abajo,
+   así que gana sin depender del orden en el archivo. */
+a:active, button:active,
+.tile:active, .row_head:active, .ver_mas:active, .scroll_atajo:active, #theme_btn:active,
+#btn_en:active, #btn_es:active {
+    cursor: var(--cursor-active), pointer;
 }
 
 ::selection {
@@ -171,6 +203,7 @@ body {
     color: var(--text-main);
     text-decoration: none;
     font-weight: normal;
+    user-select: none;
 }
 
 .nav_link {
@@ -205,6 +238,7 @@ body {
     justify-self: end;
     display: flex;
     flex-direction: row;
+    user-select: none;
 }
 
 .theme_btn {
@@ -216,12 +250,12 @@ body {
     font-weight: 400;
     font-size: clamp(11px, 1.25vw, 16px);   /* acompaña la subida de los links */
     border-radius: 99px;
-    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     width: fit-content;
     white-space: nowrap;
+    user-select: none;
 }
 
 .theme_btn:hover {
@@ -429,6 +463,7 @@ body {
     line-height: .96;
     text-transform: none;
     color: var(--text-main);
+    user-select: none;
 }
 
 
@@ -447,7 +482,7 @@ body {
     border-radius: 14px;
     background: var(--surface);
     border: 1px solid var(--gris_transparente);
-    cursor: pointer;
+    cursor: var(--cursor-pointer), pointer;
     isolation: isolate;
     transition: transform .35s cubic-bezier(.2, .7, .2, 1), border-color .35s;
 }
@@ -589,7 +624,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 22px 4px;
-    cursor: pointer;
+    cursor: var(--cursor-pointer), pointer;
 }
 
 
@@ -720,7 +755,7 @@ body {
     font-size: 12px;
     letter-spacing: .12em;
     text-transform: uppercase;
-    cursor: pointer;
+    cursor: var(--cursor-pointer), pointer;
     transition: color .25s, border-color .25s;
 }
 
@@ -754,7 +789,7 @@ body {
     background: var(--text-main);
     border: none;
     color: var(--bg-main);
-    cursor: pointer;
+    cursor: var(--cursor-pointer), pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -804,6 +839,7 @@ body {
     padding-bottom: clamp(10px, 1.2vw, 16px);
     border-bottom: 1px solid var(--gris_transparente);
     margin-bottom: clamp(18px, 2vw, 28px);
+    user-select: none;
 }
 
 
