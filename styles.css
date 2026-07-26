@@ -26,95 +26,60 @@
 
 
 :root {
-    --bg-main: #0b0b0c;           /* neutral noir: los videos se ven con su color real */
-    --surface: #141416;           /* tarjetas del bento */
-    --surface-2: #1c1c1f;         /* hover / segundo nivel */
-    --text-main: #f5f3ee;         /* off-white, títulos y texto principal */
-    --text-muted: #8c8a85;        /* labels, roles, texto secundario */
-    --gris_transparente: #1e1e20; /* líneas y bordes */
-    --accent: #e9b44c;            /* gold, con cuentagotas */
-    --accent-hover: #d9a63e;
+    --bg-main: #0b0b0c;           
+    --surface: #141416;           
+    --surface-2: #1c1c1f;         
+    --text-main: #f5f3ee;         
+    --text-muted: #8c8a85;        
+    --gris_transparente: #1e1e20; 
+    --accent: #f4bb3d;
+    --accent-hover: #e0a72e;
     --status-green: #34d399;
-    --text-strong: #ffffff;       /* un punto más que text-main: la fila abierta del archivo */
+    --text-strong: #ffffff;       
 
     --halo_verde: rgba(52, 211, 153, .5);
 
-    /* Los créditos del bento van sobre material filmado, que puede ser de
-       cualquier color. Por eso el degradado de .tile_reveal es oscuro en los
-       DOS temas y estos tres colores NO se invierten: están declarados acá
-       para que se vea que quedan iguales a propósito, no por olvido. */
     --scrim_texto: #f5f3ee;
     --scrim_texto_2: #d6d6d2;
     --scrim_texto_muted: #8c8a85;
 
-    /* El retrato es una foto sobre gris claro de estudio apoyada en una página
-       casi negra. El filete la vuelve una placa montada en vez de un rectángulo
-       suelto, y la sombra le da apoyo. Van como variables porque el tema claro
-       necesita otros valores: sobre off-white, un negro al 90% es una mancha. */
+
     --retrato_filete: rgba(245, 243, 238, .16);
     --retrato_sombra: rgba(0, 0, 0, .9);
 
     --font-sans: 'PP Neue Gstaad', system-ui, -apple-system, sans-serif;
-    /* Los labels chicos (año, tipo, rol, etiquetas de sección, footer) ya no
-       son monoespaciados: es la MISMA familia en Light. Lo que los separa del
-       título ahora es el peso, no otra tipografía. El nombre de la variable
-       queda porque marca dónde va ese registro, y porque volver a una mono
-       es cambiar esta línea sola. Las reglas que la usan piden font-weight: 300. */
+
     --font-mono: 'PP Neue Gstaad', ui-monospace, 'SF Mono', Menlo, monospace;
-    /* Ya tenemos el archivo, así que esto apunta a la familia real.
-       El efecto de "link activo" lo da el font-weight, no un archivo distinto. */
+
     --font-ppGstaadBold: var(--font-sans);
 
     --pad: clamp(20px, 3.5vw, 80px);
 
-    /* Cursor a medida: círculo hueco color acento en reposo, y un círculo
-       relleno con una flecha (el mismo gesto que ya usan los links externos)
-       al pasar sobre algo clickeable. Van como variables para poder pisarlas
-       en el tema claro con el acento "deep" y que el cursor siga siendo legible. */
-    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%23e9b44c' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
-    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23e9b44c' fill-opacity='0.22' stroke='%23e9b44c' stroke-width='3'/%3E%3Cpath d='M13 21L21 13M21 13H14M21 13V20' stroke='%23e9b44c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") 18 18;
-    /* al hacer click no cambia a la flecha: el círculo se rellena entero del
-       mismo acento, como feedback de "presionado" */
-    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23e9b44c'/%3E%3C/svg%3E") 18 18;
+
+    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%23f4bb3d' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23f4bb3d'/%3E%3C/svg%3E") 18 18;
+    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='12' fill='%23f4bb3d'/%3E%3C/svg%3E") 18 18;
 }
 
 
-/* =========================================================
-   00b · TEMA CLARO
-   No hay ni una regla de componente duplicada acá abajo: este
-   bloque solo le da OTRO VALOR a las mismas variables de arriba.
-   Como todo el CSS pinta con var(--...), toda la página cambia sola.
-
-   Se activa cuando main.js le pone data-tema="claro" al <html>.
-   :root[data-tema="claro"] pesa más que :root a secas (le suma un
-   atributo), así que gana sin importar el orden en el archivo.
-   ========================================================= */
 :root[data-tema="claro"] {
-    /* fondo y texto dados vuelta: el off-white pasa a ser el fondo
-       y el casi-negro, el texto. Son los dos colores que ya estaban. */
     --bg-main: #f5f3ee;
-    --surface: #ffffff;           /* la tarjeta del bento, un punto más clara que el fondo */
-    --surface-2: #e8e5dd;         /* hover / segundo nivel */
-    --text-main: #0b0b0c;         /* 17.74:1 contra el fondo */
-    --text-muted: #62605a;        /* 5.67:1 — casi el mismo 5.70:1 que el muted del oscuro */
-    --gris_transparente: #cfcabe; /* filete apenas visible: 1.47:1 */
-    /* el gold #e9b44c da 1.9:1 sobre este fondo, ilegible. Este es el
-       "Gold · deep" de paleta.html, que existe justo para fondo claro: 4.55:1 */
-    --accent: #8a6a1f;
-    --accent-hover: #6f551a;
-    --status-green: #0f7a52;      /* el mint #34d399 sobre off-white daba 1.73:1 */
+    --surface: #ffffff;           
+    --surface-2: #e8e5dd;         
+    --text-main: #0b0b0c;         
+    --text-muted: #62605a;       
+    --gris_transparente: #cfcabe; 
+    --accent: #916c12;
+    --accent-hover: #78590f;
+    --status-green: #0f7a52;      
     --halo_verde: rgba(15, 122, 82, .45);
     --text-strong: #000000;
-    /* sobre off-white el filete tiene que ser oscuro, y la sombra bajar
-       muchísimo: el negro al 90% del tema oscuro acá se ve como suciedad */
     --retrato_filete: rgba(11, 11, 12, .18);
     --retrato_sombra: rgba(11, 11, 12, .32);
 
-    /* mismo cursor, con el acento "deep" del tema claro para que no se pierda
-       contra el fondo off-white */
-    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%238a6a1f' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
-    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238a6a1f' fill-opacity='0.22' stroke='%238a6a1f' stroke-width='3'/%3E%3Cpath d='M13 21L21 13M21 13H14M21 13V20' stroke='%238a6a1f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") 18 18;
-    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%238a6a1f'/%3E%3C/svg%3E") 18 18;
+    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='%23916c12' stroke-width='3.2'/%3E%3C/svg%3E") 14 14;
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='15' fill='%23916c12'/%3E%3C/svg%3E") 18 18;
+    --cursor-active: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='12' fill='%23916c12'/%3E%3C/svg%3E") 18 18;
 }
 
 * {
@@ -142,9 +107,6 @@ a, button,
     cursor: var(--cursor-pointer), pointer;
 }
 
-/* al hacer click no se ve la flecha: el círculo se rellena entero. La
-   pseudo-clase :active pesa más que el .tile/.row_head/etc de más abajo,
-   así que gana sin depender del orden en el archivo. */
 a:active, button:active,
 .tile:active, .row_head:active, .ver_mas:active, .scroll_atajo:active, #theme_btn:active,
 #btn_en:active, #btn_es:active {
@@ -157,15 +119,12 @@ a:active, button:active,
 }
 
 .viewport_1920_container {
-    max-width: 1920px;   /* en tu monitor de 1920 ocupa casi todo el ancho */
+    max-width: 1920px;  
     margin: 0 auto;
     padding: 0 var(--pad);
 }
 
 
-/* =========================================================
-   01 · NAVBAR
-   ========================================================= */
 .main_header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -176,8 +135,6 @@ a:active, button:active,
     padding: 0 12px;
 }
 
-/* El nombre + la línea de estado, como un solo bloque. El aire de adentro
-   (6px) es mucho menor que el de afuera: eso es lo que los agrupa. */
 .name_lockup {
     justify-self: start;
     padding: 18px 0 18px;
@@ -189,9 +146,6 @@ a:active, button:active,
     text-decoration: none;
     font-weight: 400;
     font-size: clamp(2rem, 3vw, 4rem);
-    /* block + line-height 1: sin esto el <a> arrastra el interlineado del
-       header y aparecen ~10px de aire fantasma abajo del nombre que no hay
-       forma de sacar desde el padding */
     display: block;
     line-height: 1;
 }
@@ -248,7 +202,7 @@ a:active, button:active,
     color: var(--bg-main);
     font-family: var(--font-mono);
     font-weight: 400;
-    font-size: clamp(11px, 1.25vw, 16px);   /* acompaña la subida de los links */
+    font-size: clamp(11px, 1.25vw, 16px);   
     border-radius: 99px;
     display: inline-flex;
     align-items: center;
@@ -304,10 +258,6 @@ a:active, button:active,
 }
 
 
-
-/* =========================================================
-   03 · HERO
-   ========================================================= */
 .hero {
 
     padding: clamp(44px, 8vw, 91px) 0;
